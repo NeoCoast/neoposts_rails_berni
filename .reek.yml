@@ -1,0 +1,4 @@
+### Excluding directories
+detectors:
+  IrresponsibleModule:
+    enabled: false
