@@ -7,3 +7,5 @@ pre-commit:
       run: bundle exec reek .
     rails_best_practices:
       run: bundle exec rails_best_practices
+    test:
+      run: rspec spec
