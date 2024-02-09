@@ -3,3 +3,7 @@ AllCops:
     - 'bin/*'
     - 'config/**/*'
     - 'db/**/*'
+
+Metrics/BlockLength:
+  Exclude:
+    - 'spec/**/*'
