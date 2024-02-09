@@ -7,9 +7,11 @@ ruby '3.0.0'
 
 gem 'annotate', '~> 3.2'
 
+gem 'devise_token_auth', '~> 1.2', '>= 1.2.2'
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails', branch: 'main'
 gem 'rails', '~> 6.1.7', '>= 6.1.7.6'
 
+gem 'omniauth', '~> 2.1', '>= 2.1.2'
 # Use postgresql as the database for Active Record
 gem 'pg', '~> 1.1'
 # Use Puma as the app server
