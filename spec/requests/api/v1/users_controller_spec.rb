@@ -35,4 +35,37 @@ RSpec.describe Api::V1::UsersController do
       users.each { |user| expect(json_response['users'].map { |x| x['nickname'] }).to include(user.nickname) }
     end
   end
+
+  describe 'PUT users #update' do
+    before(:each) do
+      put api_v1_user_path(user), headers: auth_headers, params: { user: updated_attributes }, as: :json
+    end
+
+    context 'with valid attributes' do
+      let(:updated_attributes) { { first_name: 'UpdatedFirstName', last_name: 'UpdatedLastName' } }
+
+      it 'returns http success' do
+        expect(response).to have_http_status(:success)
+      end
+
+      it 'updates the user attributes' do
+        user.reload
+        expect(user.first_name).to eq(updated_attributes[:first_name])
+        expect(user.last_name).to eq(updated_attributes[:last_name])
+      end
+    end
+
+    context 'with invalid attributes' do
+      let!(:another_user) { create :user }
+      let(:updated_attributes) { { email: another_user.email, nickname: another_user.nickname } }
+
+      it 'validates email and nickname uniqueness' do
+        expect(response).to have_http_status(:unprocessable_entity)
+        json_response = JSON.parse(response.body)
+
+        expect(json_response['errors']).to include('Nickname has already been taken')
+        expect(json_response['errors']).to include('Email has already been taken')
+      end
+    end
+  end
 end
