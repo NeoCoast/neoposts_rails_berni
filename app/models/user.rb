@@ -6,6 +6,7 @@ class User < ApplicationRecord
   devise :database_authenticatable, :registerable
   include DeviseTokenAuth::Concerns::User
 
+  validates :email, uniqueness: { case_sensitive: true }
   validates :nickname, uniqueness: { case_sensitive: false }
   validates :first_name, :last_name, :nickname, :email, presence: true
 end
