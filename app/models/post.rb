@@ -7,6 +7,8 @@ class Post < ApplicationRecord
 
   before_validation :set_published_at, on: :create
 
+  private
+
   def set_published_at
     self.published_at = DateTime.now
   end

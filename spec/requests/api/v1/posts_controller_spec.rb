@@ -4,7 +4,6 @@ require 'rails_helper'
 
 RSpec.describe Api::V1::UsersController do
   let(:user) { create :user }
-  let!(:create_user) { create_list(:user, 15) }
   let!(:create_posts) { create_list(:post, 5) }
   let!(:auth_headers) { user.create_new_auth_token }
   let!(:attrs_post) { attributes_for :post }
@@ -72,7 +71,7 @@ RSpec.describe Api::V1::UsersController do
 
     it 'JSON body response contains expected post attributes' do
       json_response = JSON.parse(response.body)
-      expect(json_response.keys).to match_array(%w[notice])
+      expect(json_response.keys).to match_array(%w[id title body published_at user_id])
     end
   end
 end

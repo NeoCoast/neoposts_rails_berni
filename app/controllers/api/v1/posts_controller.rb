@@ -10,9 +10,7 @@ module Api
       def create
         @post = current_user.posts.new(post_params)
         if @post.save
-          render json: {
-            notice: 'Post created successfully!'
-          }
+          render partial: 'api/v1/posts/post', locals: { post: @post }
         else
           render json: {
             errors: @post.errors
