@@ -21,7 +21,12 @@ module Api
       def show; end
 
       def index
-        @posts = Post.all
+        followed_posts = current_user.following
+        @posts = Post.where(user_id: followed_posts.map(&:id))
+                     .page(params[:page])
+                     .per(params[:per_page])
+                     .scope_order(params[:order] || 'DESC')
+                     .scope_search(params[:search] || '')
       end
 
       private
