@@ -68,4 +68,58 @@ RSpec.describe Api::V1::UsersController do
       end
     end
   end
+
+  describe 'Follow User' do
+    let(:user1) { create :user }
+
+    context 'with not found user' do
+      before(:each) do
+        post follow_api_v1_user_path(-1), headers: auth_headers
+      end
+
+      it 'doest not found user' do
+        expect(response).to have_http_status(401)
+      end
+    end
+
+    context 'with authenticated user' do
+      before(:each) do
+        post follow_api_v1_user_path(user1), headers: auth_headers
+      end
+
+      it 'creates relationship with follower user' do
+        expect(Relationship.last.follower).to eq(user)
+      end
+
+      it 'creates relationship with followed user1' do
+        expect(Relationship.last.followed).to eq(user1)
+      end
+    end
+  end
+
+  describe 'Unfollow User' do
+    let(:user1) { create :user }
+    let(:follow) { post follow_api_v1_user_path(user1.id), headers: auth_headers }
+
+    context 'with authenticated user' do
+      before(:each) do
+        follow
+        post unfollow_api_v1_user_path(user1.id), headers: auth_headers
+      end
+
+      it 'eliminates the only one relationship' do
+        expect(Relationship.any?).to eq(false)
+      end
+    end
+
+    context 'with not found user' do
+      before(:each) do
+        post unfollow_api_v1_user_path(-1), headers: auth_headers
+      end
+
+      it 'doest not found user' do
+        expect(response).to have_http_status(401)
+      end
+    end
+  end
 end
