@@ -78,7 +78,7 @@ RSpec.describe Api::V1::UsersController do
       end
 
       it 'doest not found user' do
-        expect(response).to have_http_status(401)
+        expect(response).to have_http_status(404)
       end
     end
 
@@ -118,7 +118,7 @@ RSpec.describe Api::V1::UsersController do
       end
 
       it 'doest not found user' do
-        expect(response).to have_http_status(401)
+        expect(response).to have_http_status(404)
       end
     end
   end
