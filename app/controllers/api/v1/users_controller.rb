@@ -5,7 +5,7 @@ module Api
   module V1
     # class Api::V1::UsersController
     class UsersController < ApplicationController
-      before_action :find_user, only: [:update]
+      before_action :find_user, only: %i[update follow unfollow]
 
       def index
         @users = User.all
@@ -23,6 +23,14 @@ module Api
         end
       end
 
+      def follow
+        current_user.follow(@user)
+      end
+
+      def unfollow
+        current_user.unfollow(@user)
+      end
+
       private
 
       def password_present?
@@ -31,6 +39,10 @@ module Api
 
       def find_user
         @user = User.find(params[:id])
+      rescue ActiveRecord::RecordNotFound
+        render json: {
+          error: 'User not found!'
+        }, status: 404
       end
 
       def update_with_password
